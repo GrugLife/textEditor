@@ -47,7 +47,7 @@ filemenu.add_command(label='save', command=saveFile)
 filemenu.add_command(label='Save As', command=saveAs)
 filemenu.add_separator()
 filemenu.add_command(label='Quit', command=root.quit)
-#menubar.add_cascade(filemenu)
+menubar.add_cascade(label='File', menu='filemenu')
 
 root.config(menu=menubar)
 
