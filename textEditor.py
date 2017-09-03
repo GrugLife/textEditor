@@ -2,20 +2,54 @@
 # textEditor.py - my very own text editor
 
 from Tkinter import *
+from tkFileDialog import *
 
-def onclick():
-    pass
+filename = None
+
+def newFile():
+    global filename
+    filename = "Untitled"
+    text.delete(0.0, END)
+
+def saveFile():
+    global filename
+    t = text.get(0.0, END)
+    f = open(filename, 'w')
+    f.write(t)
+    f.close()
+
+def saveAs():
+    f = asksaveasfile(mode='w', defaultextension='.txt')
+    t = text.get(0.0, END)
+    try:
+        f.write(t.rstring())
+    except:
+        showerror(title='Oops', message='unable to save file')
+
+def openFile():
+    f = askopenfile(mode='r')
+    t = f.read()
+    text.delete(0.0, END)
+    text.insert(0.0, t)
 
 root = Tk()
-text = Text(root)
-#text.insert(INSERT, "hello.....")
-#text.insert(END, "world")
+root.title("My very own Python Text Editor")
+root.minsize(width=400, height=400)
+root.maxsize(width=400, height=400)
+text = Text(root, width=400, height=400)
 text.pack()
 
+menubar = Menu(root)
+filemenu = Menu(menubar)
+filemenu.add_command(label='New', command = newFile)
+filemenu.add_command(label='Open', command=openFile)
+filemenu.add_command(label='save', command=saveFile)
+filemenu.add_command(label='Save As', command=saveAs)
+filemenu.add_separator()
+filemenu.add_command(label='Quit', command=root.quit)
+#menubar.add_cascade(filemenu)
 
-#text.tag_add("here", "1.0", "1.4")
-#text.tag_add("start", "1.8", "1.13")
-#text.tag_config("here", background = "yellow", foreground="blue")
-#text.tag_config("start", background = "black", foreground="green")
+root.config(menu=menubar)
+
 root.mainloop()
 
